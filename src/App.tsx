@@ -14,6 +14,14 @@ interface Startup {
   website: string;
 }
 
+interface MarketNews {
+  id: string;
+  title: string;
+  summary: string;
+  category: string;
+  date: string;
+}
+
 const formFields = {
   signUp: {
     email: {
@@ -58,11 +66,81 @@ function App() {
             </div>
           </header>
           <main>
+            <MarketNewsSection />
             <StartupDashboard />
           </main>
         </div>
       )}
     </Authenticator>
+  );
+}
+
+function MarketNewsSection() {
+  const marketNews: MarketNews[] = [
+    {
+      id: '1',
+      title: 'AI Startups Raise Record $50B in 2024',
+      summary: 'Venture capital continues flowing into artificial intelligence, with Series A rounds averaging $15M. Investors are particularly focused on generative AI and enterprise automation solutions.',
+      category: 'VC TRENDS',
+      date: 'Nov 15, 2025'
+    },
+    {
+      id: '2',
+      title: 'FinTech Sector Shows Strong Growth',
+      summary: 'Payment and banking startups attract significant investor interest amid digital transformation. Embedded finance and B2B payments lead the sector.',
+      category: 'FINTECH',
+      date: 'Nov 14, 2025'
+    },
+    {
+      id: '3',
+      title: 'Series A Valuations Stabilize at $45M Average',
+      summary: 'After 2023 corrections, startup valuations are finding equilibrium with more realistic expectations. Founders report improved term sheets and faster closing times.',
+      category: 'MARKET',
+      date: 'Nov 13, 2025'
+    },
+    {
+      id: '4',
+      title: 'Climate Tech Investments Surge 40% YoY',
+      summary: 'Sustainable technology and clean energy startups see unprecedented funding. Carbon capture and renewable energy storage lead investment categories.',
+      category: 'CLEANTECH',
+      date: 'Nov 12, 2025'
+    }
+  ];
+
+  const marketStats = [
+    { label: 'Total VC Funding Q3', value: '$75.2B', change: '+12%' },
+    { label: 'Average Series A', value: '$15.3M', change: '+8%' },
+    { label: 'Active Deals', value: '2,847', change: '+5%' },
+    { label: 'IPO Pipeline', value: '156', change: '-3%' }
+  ];
+
+  return (
+    <div className="market-section">
+      <h2 className="section-title">📊 Market Intelligence</h2>
+      
+      <div className="market-stats">
+        {marketStats.map((stat, index) => (
+          <div key={index} className="stat-card">
+            <div className="stat-value">{stat.value}</div>
+            <div className="stat-label">{stat.label}</div>
+            <div className={'stat-change ' + (stat.change.startsWith('+') ? 'positive' : 'negative')}>
+              {stat.change}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="news-grid">
+        {marketNews.map(news => (
+          <div key={news.id} className="news-card">
+            <div className="news-category">{news.category}</div>
+            <h3 className="news-title">{news.title}</h3>
+            <p className="news-summary">{news.summary}</p>
+            <div className="news-date">{news.date}</div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -84,63 +162,123 @@ function StartupDashboard() {
       const sampleData: Startup[] = [
         {
           startup_id: 'startup_001',
-          name: 'TechCorp',
-          industry: 'FinTech',
+          name: 'NeuralFlow AI',
+          industry: 'Artificial Intelligence',
           funding_stage: 'Series A',
-          description: 'AI-powered financial analytics platform helping businesses make data-driven decisions.',
+          description: 'Enterprise AI platform that automates complex business workflows using large language models and custom ML pipelines.',
           location: 'San Francisco, CA',
-          founded_year: 2020,
-          website: 'https://techcorp.example.com'
+          founded_year: 2022,
+          website: 'https://neuralflow.ai'
         },
         {
           startup_id: 'startup_002',
-          name: 'HealthAI',
+          name: 'MediScan Pro',
           industry: 'HealthTech',
-          funding_stage: 'Seed',
-          description: 'Machine learning for medical diagnostics and patient care optimization.',
+          funding_stage: 'Series B',
+          description: 'AI-powered medical imaging analysis that detects early-stage cancers with 99.2% accuracy, integrated with hospital PACS systems.',
           location: 'Boston, MA',
-          founded_year: 2021,
-          website: 'https://healthai.example.com'
+          founded_year: 2020,
+          website: 'https://mediscanpro.com'
         },
         {
           startup_id: 'startup_003',
-          name: 'EduLearn',
-          industry: 'EdTech',
-          funding_stage: 'Series B',
-          description: 'Personalized learning platform using adaptive algorithms.',
-          location: 'Austin, TX',
-          founded_year: 2019,
-          website: 'https://edulearn.example.com'
+          name: 'PayFlow',
+          industry: 'FinTech',
+          funding_stage: 'Series A',
+          description: 'B2B payment infrastructure for cross-border transactions, reducing fees by 70% and settlement time to under 1 hour.',
+          location: 'New York, NY',
+          founded_year: 2021,
+          website: 'https://payflow.io'
         },
         {
           startup_id: 'startup_004',
-          name: 'GreenEnergy',
+          name: 'CarbonZero',
           industry: 'CleanTech',
-          funding_stage: 'Series A',
-          description: 'Renewable energy solutions for residential and commercial buildings.',
+          funding_stage: 'Seed',
+          description: 'Direct air carbon capture technology using novel sorbent materials. Currently removing 1,000 tons CO2/year per unit.',
           location: 'Denver, CO',
-          founded_year: 2020,
-          website: 'https://greenenergy.example.com'
+          founded_year: 2023,
+          website: 'https://carbonzero.tech'
         },
         {
           startup_id: 'startup_005',
-          name: 'CloudSecure',
-          industry: 'Cybersecurity',
-          funding_stage: 'Seed',
-          description: 'Next-generation cloud security and threat detection platform.',
-          location: 'Seattle, WA',
-          founded_year: 2022,
-          website: 'https://cloudsecure.example.com'
+          name: 'LearnPath',
+          industry: 'EdTech',
+          funding_stage: 'Series A',
+          description: 'Adaptive learning platform using cognitive science to personalize education paths. 40% improvement in student outcomes.',
+          location: 'Austin, TX',
+          founded_year: 2021,
+          website: 'https://learnpath.edu'
         },
         {
           startup_id: 'startup_006',
-          name: 'FoodTech Labs',
+          name: 'SecureStack',
+          industry: 'Cybersecurity',
+          funding_stage: 'Series B',
+          description: 'Zero-trust security platform for cloud-native applications. Automated threat detection and response in milliseconds.',
+          location: 'Seattle, WA',
+          founded_year: 2020,
+          website: 'https://securestack.io'
+        },
+        {
+          startup_id: 'startup_007',
+          name: 'FarmGenius',
+          industry: 'AgTech',
+          funding_stage: 'Seed',
+          description: 'Precision agriculture platform using satellite imagery and IoT sensors to optimize crop yields and reduce water usage by 35%.',
+          location: 'Des Moines, IA',
+          founded_year: 2023,
+          website: 'https://farmgenius.ag'
+        },
+        {
+          startup_id: 'startup_008',
+          name: 'QuantumLeap',
+          industry: 'Quantum Computing',
+          funding_stage: 'Series A',
+          description: 'Quantum computing as a service for pharmaceutical and financial modeling. 1000x speedup on specific optimization problems.',
+          location: 'Cambridge, MA',
+          founded_year: 2022,
+          website: 'https://quantumleap.tech'
+        },
+        {
+          startup_id: 'startup_009',
+          name: 'RoboChef',
           industry: 'FoodTech',
           funding_stage: 'Pre-Seed',
-          description: 'Sustainable food production using vertical farming technology.',
-          location: 'New York, NY',
+          description: 'Autonomous kitchen robots for restaurant chains. Reduces labor costs by 60% while maintaining consistent food quality.',
+          location: 'Los Angeles, CA',
+          founded_year: 2024,
+          website: 'https://robochef.kitchen'
+        },
+        {
+          startup_id: 'startup_010',
+          name: 'SpaceLink',
+          industry: 'SpaceTech',
+          funding_stage: 'Series B',
+          description: 'Low-earth orbit satellite constellation for global IoT connectivity. Provides coverage in remote areas with 99.9% uptime.',
+          location: 'Houston, TX',
+          founded_year: 2019,
+          website: 'https://spacelink.global'
+        },
+        {
+          startup_id: 'startup_011',
+          name: 'BioForge',
+          industry: 'Biotech',
+          funding_stage: 'Series A',
+          description: 'Synthetic biology platform for sustainable materials production. Creating leather alternatives from engineered microorganisms.',
+          location: 'San Diego, CA',
+          founded_year: 2022,
+          website: 'https://bioforge.bio'
+        },
+        {
+          startup_id: 'startup_012',
+          name: 'PropTech360',
+          industry: 'PropTech',
+          funding_stage: 'Seed',
+          description: 'AI-powered real estate investment analysis platform. Predicts property values with 94% accuracy using market and demographic data.',
+          location: 'Miami, FL',
           founded_year: 2023,
-          website: 'https://foodtechlabs.example.com'
+          website: 'https://proptech360.com'
         }
       ];
 
@@ -173,6 +311,8 @@ function StartupDashboard() {
 
   return (
     <div className="dashboard">
+      <h2 className="section-title">🏢 Browse Startups</h2>
+      
       <div className="filters">
         <input
           type="text"
@@ -252,3 +392,4 @@ function StartupCard({ startup }: { startup: Startup }) {
 }
 
 export default App;
+
