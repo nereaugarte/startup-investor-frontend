@@ -8,17 +8,16 @@
 
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f7fafc;
 }
 
 .header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  background: #2c5282;
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -26,7 +25,7 @@
 
 .header h1 {
   font-size: 1.8rem;
-  color: #2d3748;
+  color: white;
   font-weight: 700;
 }
 
@@ -37,13 +36,13 @@
 }
 
 .user-info span {
-  color: #4a5568;
+  color: white;
   font-weight: 500;
 }
 
 .sign-out-btn {
-  background: #667eea;
-  color: white;
+  background: white;
+  color: #2c5282;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 8px;
@@ -53,9 +52,9 @@
 }
 
 .sign-out-btn:hover {
-  background: #5568d3;
+  background: #f7fafc;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 main {
@@ -71,7 +70,7 @@ main {
 
 .section-title {
   font-size: 2rem;
-  color: white;
+  color: #2d3748;
   margin-bottom: 1.5rem;
   font-weight: 700;
 }
@@ -84,16 +83,17 @@ main {
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
   transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .stat-value {
@@ -129,22 +129,23 @@ main {
 }
 
 .news-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .news-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .news-category {
   display: inline-block;
-  background: #667eea;
+  background: #2c5282;
   color: white;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
@@ -178,10 +179,11 @@ main {
 
 /* Dashboard Section */
 .dashboard {
-  background: rgba(255, 255, 255, 0.05);
+  background: white;
   border-radius: 16px;
   padding: 2rem;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
 }
 
 .dashboard-header {
@@ -199,8 +201,8 @@ main {
 }
 
 .portfolio-btn {
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid transparent;
+  background: white;
+  border: 2px solid #e2e8f0;
   padding: 0.7rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
@@ -212,13 +214,14 @@ main {
 
 .portfolio-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e0;
 }
 
 .portfolio-btn.active {
-  background: #f6e05e;
-  color: #2d3748;
-  border-color: #ecc94b;
+  background: #2c5282;
+  color: white;
+  border-color: #2c5282;
 }
 
 .filters {
@@ -237,10 +240,10 @@ main {
 .search-input,
 .filter-select {
   padding: 0.8rem 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: white;
   color: #2d3748;
   transition: all 0.3s ease;
 }
@@ -248,12 +251,12 @@ main {
 .search-input:focus,
 .filter-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #2c5282;
+  box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
 }
 
 .stats {
-  color: white;
+  color: #4a5568;
   margin-bottom: 1.5rem;
   font-size: 1rem;
   font-weight: 500;
@@ -266,14 +269,14 @@ main {
   align-items: center;
   justify-content: center;
   min-height: 300px;
-  color: white;
+  color: #4a5568;
 }
 
 .loading-spinner {
   width: 50px;
   height: 50px;
-  border: 5px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border: 5px solid #e2e8f0;
+  border-top-color: #2c5282;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -318,8 +321,8 @@ main {
 }
 
 .startup-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -451,7 +454,7 @@ main {
 
 .view-details-btn {
   flex: 1;
-  background: #667eea;
+  background: #2c5282;
   color: white;
   border: none;
   padding: 0.75rem 1rem;
@@ -463,9 +466,9 @@ main {
 }
 
 .view-details-btn:hover {
-  background: #5568d3;
+  background: #2a4365;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);
 }
 
 /* Modal Styles */
@@ -482,6 +485,7 @@ main {
   z-index: 1000;
   padding: 1rem;
   animation: fadeIn 0.3s ease;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
@@ -494,16 +498,17 @@ main {
   border-radius: 16px;
   max-width: 800px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
   animation: slideUp 0.3s ease;
+  margin: auto;
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -674,28 +679,28 @@ main {
 
 .website-link-large {
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #2c5282;
+  border: 2px solid #2c5282;
 }
 
 .website-link-large:hover {
-  background: #667eea;
+  background: #2c5282;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);
 }
 
 .contact-btn-large {
-  background: #667eea;
+  background: #2c5282;
   color: white;
-  border: 2px solid #667eea;
+  border: 2px solid #2c5282;
 }
 
 .contact-btn-large:hover {
-  background: #5568d3;
-  border-color: #5568d3;
+  background: #2a4365;
+  border-color: #2a4365;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(44, 82, 130, 0.4);
 }
 
 /* Responsive Design */
@@ -759,11 +764,11 @@ main {
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-  background: #667eea;
+  background: #2c5282;
   border-radius: 10px;
 }
 
 .modal-content::-webkit-scrollbar-thumb:hover {
-  background: #5568d3;
+  background: #2a4365;
 }
 
