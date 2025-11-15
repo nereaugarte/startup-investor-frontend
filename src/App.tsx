@@ -104,6 +104,48 @@ function MarketNewsSection() {
       summary: 'Sustainable technology and clean energy startups see unprecedented funding. Carbon capture and renewable energy storage lead investment categories.',
       category: 'CLEANTECH',
       date: 'Nov 12, 2025'
+    },
+    {
+      id: '5',
+      title: 'Healthcare AI Valuations Hit All-Time Highs',
+      summary: 'Medical AI companies commanding premium valuations as hospitals accelerate digital transformation. Diagnostic and drug discovery AI startups attract major pharmaceutical partnerships.',
+      category: 'HEALTHTECH',
+      date: 'Nov 11, 2025'
+    },
+    {
+      id: '6',
+      title: 'Cybersecurity Startups See 35% Funding Increase',
+      summary: 'Rising cyber threats drive record investments in security infrastructure. Zero-trust architecture and AI-powered threat detection lead the surge.',
+      category: 'CYBERSECURITY',
+      date: 'Nov 10, 2025'
+    },
+    {
+      id: '7',
+      title: 'European Startup Ecosystem Outpaces US Growth',
+      summary: 'London, Berlin, and Paris see 25% increase in seed funding. European founders benefit from stronger government support and expanding venture capital presence.',
+      category: 'GLOBAL',
+      date: 'Nov 9, 2025'
+    },
+    {
+      id: '8',
+      title: 'SaaS Multiples Recover to 8x Revenue',
+      summary: 'Software-as-a-Service valuations rebound after 2023 downturn. Enterprise SaaS with strong retention metrics command premium multiples from investors.',
+      category: 'SAAS',
+      date: 'Nov 8, 2025'
+    },
+    {
+      id: '9',
+      title: 'Quantum Computing Startups Attract Strategic Investors',
+      summary: 'Major tech companies and governments invest in quantum technology. Commercial applications in cryptography and materials science drive interest.',
+      category: 'DEEPTECH',
+      date: 'Nov 7, 2025'
+    },
+    {
+      id: '10',
+      title: 'Latin America Becomes Fastest-Growing Startup Region',
+      summary: 'Brazil, Mexico, and Colombia see 60% YoY increase in venture funding. Digital payments and e-commerce lead the regional boom.',
+      category: 'EMERGING MARKETS',
+      date: 'Nov 6, 2025'
     }
   ];
 
@@ -162,123 +204,253 @@ function StartupDashboard() {
       const sampleData: Startup[] = [
         {
           startup_id: 'startup_001',
-          name: 'NeuralFlow AI',
+          name: 'OpenAI',
           industry: 'Artificial Intelligence',
-          funding_stage: 'Series A',
-          description: 'Enterprise AI platform that automates complex business workflows using large language models and custom ML pipelines.',
+          funding_stage: 'Series C',
+          description: 'Leading AI research company developing GPT models and ChatGPT. Creating safe and beneficial artificial general intelligence.',
           location: 'San Francisco, CA',
-          founded_year: 2022,
-          website: 'https://neuralflow.ai'
+          founded_year: 2015,
+          website: 'https://openai.com'
         },
         {
           startup_id: 'startup_002',
-          name: 'MediScan Pro',
-          industry: 'HealthTech',
-          funding_stage: 'Series B',
-          description: 'AI-powered medical imaging analysis that detects early-stage cancers with 99.2% accuracy, integrated with hospital PACS systems.',
-          location: 'Boston, MA',
-          founded_year: 2020,
-          website: 'https://mediscanpro.com'
+          name: 'Stripe',
+          industry: 'FinTech',
+          funding_stage: 'Series I',
+          description: 'Payment processing platform for internet businesses. Handles billions in transactions for millions of companies worldwide.',
+          location: 'San Francisco, CA',
+          founded_year: 2010,
+          website: 'https://stripe.com'
         },
         {
           startup_id: 'startup_003',
-          name: 'PayFlow',
-          industry: 'FinTech',
-          funding_stage: 'Series A',
-          description: 'B2B payment infrastructure for cross-border transactions, reducing fees by 70% and settlement time to under 1 hour.',
-          location: 'New York, NY',
-          founded_year: 2021,
-          website: 'https://payflow.io'
+          name: 'Databricks',
+          industry: 'Data & Analytics',
+          funding_stage: 'Series I',
+          description: 'Unified analytics platform built on Apache Spark. Enables data teams to collaborate on AI and ML workloads.',
+          location: 'San Francisco, CA',
+          founded_year: 2013,
+          website: 'https://databricks.com'
         },
         {
           startup_id: 'startup_004',
-          name: 'CarbonZero',
-          industry: 'CleanTech',
-          funding_stage: 'Seed',
-          description: 'Direct air carbon capture technology using novel sorbent materials. Currently removing 1,000 tons CO2/year per unit.',
-          location: 'Denver, CO',
-          founded_year: 2023,
-          website: 'https://carbonzero.tech'
+          name: 'Figma',
+          industry: 'Design & Productivity',
+          funding_stage: 'Series E',
+          description: 'Collaborative interface design tool in the browser. Used by teams at Airbnb, Microsoft, and thousands of companies.',
+          location: 'San Francisco, CA',
+          founded_year: 2012,
+          website: 'https://figma.com'
         },
         {
           startup_id: 'startup_005',
-          name: 'LearnPath',
-          industry: 'EdTech',
-          funding_stage: 'Series A',
-          description: 'Adaptive learning platform using cognitive science to personalize education paths. 40% improvement in student outcomes.',
-          location: 'Austin, TX',
-          founded_year: 2021,
-          website: 'https://learnpath.edu'
+          name: 'Notion',
+          industry: 'Productivity',
+          funding_stage: 'Series C',
+          description: 'All-in-one workspace for notes, docs, wikis, and project management. Serving millions of users and teams globally.',
+          location: 'San Francisco, CA',
+          founded_year: 2016,
+          website: 'https://notion.so'
         },
         {
           startup_id: 'startup_006',
-          name: 'SecureStack',
-          industry: 'Cybersecurity',
-          funding_stage: 'Series B',
-          description: 'Zero-trust security platform for cloud-native applications. Automated threat detection and response in milliseconds.',
-          location: 'Seattle, WA',
-          founded_year: 2020,
-          website: 'https://securestack.io'
+          name: 'Canva',
+          industry: 'Design & Media',
+          funding_stage: 'Series C',
+          description: 'Online graphic design platform with drag-and-drop interface. Empowers 100M+ users to create professional designs.',
+          location: 'Sydney, Australia',
+          founded_year: 2012,
+          website: 'https://canva.com'
         },
         {
           startup_id: 'startup_007',
-          name: 'FarmGenius',
-          industry: 'AgTech',
-          funding_stage: 'Seed',
-          description: 'Precision agriculture platform using satellite imagery and IoT sensors to optimize crop yields and reduce water usage by 35%.',
-          location: 'Des Moines, IA',
-          founded_year: 2023,
-          website: 'https://farmgenius.ag'
+          name: 'Discord',
+          industry: 'Social & Communication',
+          funding_stage: 'Series H',
+          description: 'Voice, video and text communication platform for communities. 150M+ monthly active users across gaming and beyond.',
+          location: 'San Francisco, CA',
+          founded_year: 2015,
+          website: 'https://discord.com'
         },
         {
           startup_id: 'startup_008',
-          name: 'QuantumLeap',
-          industry: 'Quantum Computing',
-          funding_stage: 'Series A',
-          description: 'Quantum computing as a service for pharmaceutical and financial modeling. 1000x speedup on specific optimization problems.',
-          location: 'Cambridge, MA',
-          founded_year: 2022,
-          website: 'https://quantumleap.tech'
+          name: 'Plaid',
+          industry: 'FinTech',
+          funding_stage: 'Series D',
+          description: 'Financial services API platform connecting apps to user bank accounts. Powers fintech apps like Venmo and Robinhood.',
+          location: 'San Francisco, CA',
+          founded_year: 2013,
+          website: 'https://plaid.com'
         },
         {
           startup_id: 'startup_009',
-          name: 'RoboChef',
-          industry: 'FoodTech',
-          funding_stage: 'Pre-Seed',
-          description: 'Autonomous kitchen robots for restaurant chains. Reduces labor costs by 60% while maintaining consistent food quality.',
-          location: 'Los Angeles, CA',
-          founded_year: 2024,
-          website: 'https://robochef.kitchen'
+          name: 'Airtable',
+          industry: 'Productivity',
+          funding_stage: 'Series F',
+          description: 'Low-code platform combining spreadsheets with database power. Used by 300,000+ organizations for workflow automation.',
+          location: 'San Francisco, CA',
+          founded_year: 2012,
+          website: 'https://airtable.com'
         },
         {
           startup_id: 'startup_010',
-          name: 'SpaceLink',
-          industry: 'SpaceTech',
-          funding_stage: 'Series B',
-          description: 'Low-earth orbit satellite constellation for global IoT connectivity. Provides coverage in remote areas with 99.9% uptime.',
-          location: 'Houston, TX',
-          founded_year: 2019,
-          website: 'https://spacelink.global'
+          name: 'Instacart',
+          industry: 'E-commerce',
+          funding_stage: 'Series I',
+          description: 'Online grocery delivery and pickup service. Partnered with 1,400+ retail banners serving North America.',
+          location: 'San Francisco, CA',
+          founded_year: 2012,
+          website: 'https://instacart.com'
         },
         {
           startup_id: 'startup_011',
-          name: 'BioForge',
-          industry: 'Biotech',
-          funding_stage: 'Series A',
-          description: 'Synthetic biology platform for sustainable materials production. Creating leather alternatives from engineered microorganisms.',
-          location: 'San Diego, CA',
-          founded_year: 2022,
-          website: 'https://bioforge.bio'
+          name: 'Chime',
+          industry: 'FinTech',
+          funding_stage: 'Series G',
+          description: 'Mobile banking app with no hidden fees. Serving 13M+ accounts with early direct deposit and automated savings.',
+          location: 'San Francisco, CA',
+          founded_year: 2013,
+          website: 'https://chime.com'
         },
         {
           startup_id: 'startup_012',
-          name: 'PropTech360',
-          industry: 'PropTech',
-          funding_stage: 'Seed',
-          description: 'AI-powered real estate investment analysis platform. Predicts property values with 94% accuracy using market and demographic data.',
-          location: 'Miami, FL',
-          founded_year: 2023,
-          website: 'https://proptech360.com'
+          name: 'Deel',
+          industry: 'HR Tech',
+          funding_stage: 'Series D',
+          description: 'Global payroll and compliance platform for remote teams. Enables companies to hire anyone, anywhere compliantly.',
+          location: 'San Francisco, CA',
+          founded_year: 2019,
+          website: 'https://deel.com'
+        },
+        {
+          startup_id: 'startup_013',
+          name: 'Anthropic',
+          industry: 'Artificial Intelligence',
+          funding_stage: 'Series C',
+          description: 'AI safety company building reliable, interpretable, and steerable AI systems. Creators of Claude AI assistant.',
+          location: 'San Francisco, CA',
+          founded_year: 2021,
+          website: 'https://anthropic.com'
+        },
+        {
+          startup_id: 'startup_014',
+          name: 'Snowflake',
+          industry: 'Data & Analytics',
+          funding_stage: 'Public',
+          description: 'Cloud data platform enabling data storage, processing, and analytics. Serving thousands of enterprise customers.',
+          location: 'Bozeman, MT',
+          founded_year: 2012,
+          website: 'https://snowflake.com'
+        },
+        {
+          startup_id: 'startup_015',
+          name: 'Webflow',
+          industry: 'Design & Productivity',
+          funding_stage: 'Series C',
+          description: 'Visual web development platform for designers. Build production-ready websites without writing code.',
+          location: 'San Francisco, CA',
+          founded_year: 2013,
+          website: 'https://webflow.com'
+        },
+        {
+          startup_id: 'startup_016',
+          name: 'Ramp',
+          industry: 'FinTech',
+          funding_stage: 'Series D',
+          description: 'Corporate card and spend management platform. Helps companies save an average of 3.3% through automation and controls.',
+          location: 'New York, NY',
+          founded_year: 2019,
+          website: 'https://ramp.com'
+        },
+        {
+          startup_id: 'startup_017',
+          name: 'Verkada',
+          industry: 'Security & IoT',
+          funding_stage: 'Series D',
+          description: 'Cloud-based physical security platform. Smart cameras, access control, and environmental sensors for enterprises.',
+          location: 'San Mateo, CA',
+          founded_year: 2016,
+          website: 'https://verkada.com'
+        },
+        {
+          startup_id: 'startup_018',
+          name: 'Figma',
+          industry: 'Design Tools',
+          funding_stage: 'Series E',
+          description: 'Collaborative design platform where teams create, test, and ship better designs together in the browser.',
+          location: 'San Francisco, CA',
+          founded_year: 2012,
+          website: 'https://figma.com'
+        },
+        {
+          startup_id: 'startup_019',
+          name: 'Rippling',
+          industry: 'HR Tech',
+          funding_stage: 'Series D',
+          description: 'Unified workforce platform managing HR, IT, and Finance. One system for payroll, benefits, devices, and apps.',
+          location: 'San Francisco, CA',
+          founded_year: 2016,
+          website: 'https://rippling.com'
+        },
+        {
+          startup_id: 'startup_020',
+          name: 'Gong',
+          industry: 'Sales Tech',
+          funding_stage: 'Series E',
+          description: 'Revenue intelligence platform capturing customer interactions. AI-powered insights for sales teams.',
+          location: 'San Francisco, CA',
+          founded_year: 2015,
+          website: 'https://gong.io'
+        },
+        {
+          startup_id: 'startup_021',
+          name: 'Scale AI',
+          industry: 'Artificial Intelligence',
+          funding_stage: 'Series E',
+          description: 'Data platform for AI, providing high-quality training data. Powering ML models for autonomous vehicles and more.',
+          location: 'San Francisco, CA',
+          founded_year: 2016,
+          website: 'https://scale.com'
+        },
+        {
+          startup_id: 'startup_022',
+          name: 'Gusto',
+          industry: 'HR Tech',
+          funding_stage: 'Series E',
+          description: 'Modern payroll, benefits, and HR platform for small businesses. Serving 300,000+ businesses nationwide.',
+          location: 'San Francisco, CA',
+          founded_year: 2011,
+          website: 'https://gusto.com'
+        },
+        {
+          startup_id: 'startup_023',
+          name: 'Toast',
+          industry: 'Restaurant Tech',
+          funding_stage: 'Public',
+          description: 'Restaurant point-of-sale and management platform. All-in-one solution for front and back of house operations.',
+          location: 'Boston, MA',
+          founded_year: 2011,
+          website: 'https://toasttab.com'
+        },
+        {
+          startup_id: 'startup_024',
+          name: 'Brex',
+          industry: 'FinTech',
+          funding_stage: 'Series D',
+          description: 'Corporate credit card and spend management for startups. No personal guarantee required, higher limits.',
+          location: 'San Francisco, CA',
+          founded_year: 2017,
+          website: 'https://brex.com'
+        },
+        {
+          startup_id: 'startup_025',
+          name: 'Superhuman',
+          industry: 'Productivity',
+          funding_stage: 'Series C',
+          description: 'Blazingly fast email client built for high-performing teams. Average user saves 4+ hours per week.',
+          location: 'San Francisco, CA',
+          founded_year: 2015,
+          website: 'https://superhuman.com'
         }
       ];
 
