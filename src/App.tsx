@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
-import { fetchAuthSession } from 'aws-amplify/auth';  // ADD THIS LINE
+import { fetchAuthSession } from 'aws-amplify/auth';
 import awsConfig, { API_URL } from './aws-config';
 import '@aws-amplify/ui-react/styles.css';
 import './App.css';
+import InvestorProfile from './InvestorProfile';
 // import AnalyticsDashboard from './AnalyticsDashboard';
 // import RecommendedStartups from './RecommendedStartups';
 
@@ -22,6 +23,7 @@ interface Startup {
   funding_amount: string;
   team_size: string;
   revenue_model: string;
+  logo_url?: string;  // Add logo_url field
 }
 
 interface NewsItem {
@@ -42,6 +44,7 @@ function App() {
   const [selectedFundingStage, setSelectedFundingStage] = useState('All Stages');
   const [sortBy, setSortBy] = useState('name');
   const [showPortfolio, setShowPortfolio] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
 
   // User ID (in real app, this would come from Cognito auth)
   const [userId] = useState<string>(() => {
@@ -194,6 +197,62 @@ function App() {
     fetchStartups();
   }, []);
 
+  // Get Recommendations Now - Trigger matching manually
+  const getRecommendationsNow = async (user: any) => {
+    const confirmed = window.confirm('This will search for startups matching your preferences and send you an email. Continue?');
+    if (!confirmed) return;
+    
+    try {
+      const session = await fetchAuthSession();
+      const token = session.tokens?.idToken?.toString();
+      
+      if (!token) {
+        alert('❌ Please sign in first');
+        return;
+      }
+      
+      setLoading(true);
+      console.log('Triggering matching...');
+      
+      // Call the matching Lambda via API Gateway
+      const response = await fetch(`${API_URL}/trigger-matching`, {
+        method: 'POST',
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          investor_id: user?.signInDetails?.loginId
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Response data:', data); // Debug
+        
+        // Handle different response formats
+        let matchCount = 0;
+        if (data.body) {
+          const body = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+          matchCount = body.total_matches || 0;
+        } else {
+          matchCount = data.total_matches || 0;
+        }
+        
+        alert(`✅ Found ${matchCount} matching startup${matchCount !== 1 ? 's' : ''}! Check your email (${user?.signInDetails?.loginId}) for details.`);
+      } else {
+        const error = await response.text();
+        console.error('Matching error:', error);
+        alert('❌ Failed to get recommendations. Make sure you have set your preferences first!');
+      }
+    } catch (error) {
+      console.error('Error triggering matching:', error);
+      alert('❌ Error getting recommendations. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleViewStartup = (startup: Startup) => {
     setSelectedStartup(startup);
   };
@@ -279,6 +338,42 @@ function App() {
             <div className="header-content">
               <h1>🚀 Startup Investor Platform</h1>
               <div className="header-actions">
+                <button 
+                  onClick={() => setShowPreferences(true)}
+                  style={{
+                    marginRight: '1rem',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#2c5282',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: '600',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  ⚙️ Set Preferences
+                </button>
+                
+                <button 
+                  onClick={() => getRecommendationsNow(user)}
+                  disabled={loading}
+                  style={{
+                    marginRight: '1rem',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#38a169',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    fontWeight: '600',
+                    fontSize: '0.9rem',
+                    opacity: loading ? 0.6 : 1
+                  }}
+                >
+                  📧 Get Recommendations
+                </button>
+                
                 <span className="user-email">{user?.signInDetails?.loginId}</span>
                 <button onClick={signOut} className="signout-button">
                   Sign Out
@@ -402,6 +497,32 @@ function App() {
                 <div className="startups-grid">
                   {filteredStartups.map((startup) => (
                     <div key={startup.startup_id} className="startup-card">
+                      {/* Logo */}
+                      {startup.logo_url && (
+                        <div style={{ 
+                          display: 'flex', 
+                          justifyContent: 'center', 
+                          padding: '1rem',
+                          backgroundColor: '#f8f9fa',
+                          borderRadius: '8px 8px 0 0',
+                          marginBottom: '1rem'
+                        }}>
+                          <img 
+                            src={startup.logo_url} 
+                            alt={`${startup.name} logo`}
+                            style={{
+                              width: '80px',
+                              height: '80px',
+                              objectFit: 'contain'
+                            }}
+                            onError={(e) => {
+                              // Hide image if it fails to load
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      )}
+                      
                       <div className="card-header">
                         <h3>{startup.name}</h3>
                         <button
@@ -537,6 +658,14 @@ function App() {
               <p>© 2024 Startup Investor Platform. All rights reserved.</p>
             </div>
           </footer>
+
+          {/* Investor Profile Modal */}
+          {showPreferences && (
+            <InvestorProfile 
+              user={user} 
+              onClose={() => setShowPreferences(false)}
+            />
+          )}
         </div>
       )}
     </Authenticator>
