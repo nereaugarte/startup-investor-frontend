@@ -663,7 +663,18 @@ function App() {
                     <p>{selectedStartup.revenue_model}</p>
                   </section>
 
-                  <button className="contact-btn">
+                  <button className="contact-btn"
+			onClick={() => {
+    const subject = encodeURIComponent(`Interested in ${selectedStartup.name}`);
+    const body = encodeURIComponent(
+      `Hi ${selectedStartup.name} team,\n\n` +
+      `I'm interested in learning more about your company.\n\n` +
+      `Best regards`
+    );
+    const domain = selectedStartup.website?.replace('https://', '').replace('http://', '').split('/')[0] || 'example.com';
+    window.location.href = `mailto:contact@${domain}?subject=${subject}&body=${body}`;
+  }}	
+			>
                     📧 Contact Startup
                   </button>
                 </div>
