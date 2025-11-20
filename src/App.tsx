@@ -199,7 +199,7 @@ function App() {
 
   // Get Recommendations Now - Trigger matching manually
   const getRecommendationsNow = async (user: any) => {
-    const confirmed = window.confirm('This will search for startups matching your preferences and send you an email. Continue?');
+    const confirmed = window.confirm('This will search for startups matching your preferences and send you an email with recommendations. Continue?');
     if (!confirmed) return;
     
     try {
@@ -211,43 +211,62 @@ function App() {
         return;
       }
       
-      setLoading(true);
-      console.log('Triggering matching...');
+      // Get user email
+      const userEmail = user?.signInDetails?.loginId || user?.attributes?.email;
       
-      // Call the matching Lambda via API Gateway
-      const response = await fetch(`${API_URL}/trigger-matching`, {
+      if (!userEmail) {
+        alert('❌ Could not determine your email address');
+        return;
+      }
+      
+      setLoading(true);
+      console.log('Starting recommendation matching via Step Functions...');
+      
+      // Call the Lambda endpoint that triggers Step Functions state machine
+      const response = await fetch(`${API_URL}/match-startups`, {
         method: 'POST',
         headers: {
           'Authorization': token,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          investor_id: user?.signInDetails?.loginId
+          investor_id: user.username || userEmail,
+          email: userEmail
         })
       });
       
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Response data:', data); // Debug
-        
-        // Handle different response formats
-        let matchCount = 0;
-        if (data.body) {
-          const body = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
-          matchCount = body.total_matches || 0;
-        } else {
-          matchCount = data.total_matches || 0;
-        }
-        
-        alert(`✅ Found ${matchCount} matching startup${matchCount !== 1 ? 's' : ''}! Check your email (${user?.signInDetails?.loginId}) for details.`);
-      } else {
-        const error = await response.text();
-        console.error('Matching error:', error);
-        alert('❌ Failed to get recommendations. Make sure you have set your preferences first!');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || errorData.message || `Request failed with status ${response.status}`);
       }
-    } catch (error) {
+      
+      const data = await response.json();
+      console.log('Step Functions execution started:', data);
+      
+      // Check if execution started successfully
+      if (data.executionArn || data.execution || response.ok) {
+        alert(`✅ Matching process started! You will receive an email at ${userEmail} with your personalized startup recommendations shortly.`);
+      } else {
+        throw new Error('Unexpected response from matching service');
+      }
+      
+    } catch (error: any) {
       console.error('Error triggering matching:', error);
-      alert('❌ Error getting recommendations. Please try again.');
+      
+      // Provide more specific error messages
+      let errorMessage = '❌ Failed to get recommendations. ';
+      
+      if (error.message.includes('preferences') || error.message.includes('404')) {
+        errorMessage += 'Please make sure you have set your investment preferences first!';
+      } else if (error.message.includes('email')) {
+        errorMessage += 'There was an issue with your email address.';
+      } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        errorMessage += 'Network error. Please check your connection and try again.';
+      } else {
+        errorMessage += error.message || 'Please try again later.';
+      }
+      
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }
