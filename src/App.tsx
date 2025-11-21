@@ -241,7 +241,7 @@ function App() {
   const getRecommendationsNow = async (user: any) => {
     const confirmed = window.confirm('This will search for startups matching your preferences and send you an email with recommendations. Continue?');
     if (!confirmed) return;
-
+  
     try {
       const session = await fetchAuthSession();
       const token = session.tokens?.idToken?.toString();
@@ -250,18 +250,18 @@ function App() {
         alert('❌ Please sign in first');
         return;
       }
-
+  
       const userEmail = user?.signInDetails?.loginId || user?.attributes?.email;
       
       if (!userEmail) {
         alert('❌ Could not determine your email address');
         return;
       }
-
+  
       setLoading(true);
       console.log('Starting recommendation matching for:', userEmail);
-
-      // Call Lambda DIRECTLY via API Gateway
+  
+      // Send BOTH investor_id AND email
       const response = await fetch(`${API_URL}/match-startups`, {
         method: 'POST',
         headers: {
@@ -269,33 +269,24 @@ function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          investor_id: userEmail  // Send the user's email
+          investor_id: userEmail,  // Bruno's email
+          email: userEmail         // ADD THIS - same email
         })
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || errorData.message || `Request failed with status ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log('Matching completed:', data);
-
+  
       alert(`✅ Recommendations sent! You will receive an email at ${userEmail} with your personalized startup recommendations shortly.`);
-
+  
     } catch (error: any) {
       console.error('Error triggering matching:', error);
-      
-      let errorMessage = '❌ Failed to get recommendations. ';
-      if (error.message.includes('preferences') || error.message.includes('404')) {
-        errorMessage += 'Please make sure you have set your investment preferences first!';
-      } else if (error.message.includes('email')) {
-        errorMessage += 'There was an issue with your email address.';
-      } else {
-        errorMessage += error.message || 'Please try again later.';
-      }
-      
-      alert(errorMessage);
+      alert('❌ Failed to get recommendations. ' + error.message);
     } finally {
       setLoading(false);
     }
