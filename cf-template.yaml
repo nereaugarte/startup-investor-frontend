@@ -111,6 +111,11 @@ Resources:
               - Effect: Allow
                 Action: 'sns:Publish'
                 Resource: !Ref SNSTopic
+              - Effect: Allow
+                Action:
+                  - 'ses:SendEmail'
+                  - 'ses:SendRawEmail'
+                Resource: '*'
 
 Outputs:
   UserPoolId:

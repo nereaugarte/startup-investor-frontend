@@ -6,6 +6,7 @@ import awsConfig, { API_URL } from './aws-config';
 import '@aws-amplify/ui-react/styles.css';
 import './App.css';
 import InvestorProfile from './InvestorProfile';
+import MarketTrendsChart from './MarketTrendsChart';
 // import AnalyticsDashboard from './AnalyticsDashboard';
 // import RecommendedStartups from './RecommendedStartups';
 
@@ -45,6 +46,44 @@ function App() {
   const [sortBy, setSortBy] = useState('name');
   const [showPortfolio, setShowPortfolio] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
+  const [logoErrors, setLogoErrors] = useState<Set<string>>(new Set());
+
+  // Helper function to get logo URL (with fallback to placeholder)
+  const getLogoUrl = (startup: Startup): string => {
+    // If logo failed to load before, use placeholder
+    if (logoErrors.has(startup.startup_id)) {
+      return generatePlaceholderLogo(startup.name);
+    }
+    // If no logo_url, use placeholder
+    if (!startup.logo_url) {
+      return generatePlaceholderLogo(startup.name);
+    }
+    // Use actual logo
+    return startup.logo_url;
+  };
+
+  // Generate placeholder logo SVG
+  const generatePlaceholderLogo = (name: string): string => {
+    const firstLetter = name.charAt(0).toUpperCase();
+    const colors = [
+      '#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6',
+      '#1abc9c', '#e67e22', '#34495e', '#16a085', '#c0392b'
+    ];
+    const colorIndex = name.charCodeAt(0) % colors.length;
+    const bgColor = colors[colorIndex];
+    return `data:image/svg+xml,${encodeURIComponent(`
+      <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" fill="${bgColor}" rx="8"/>
+        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="32" font-weight="bold" 
+              fill="white" text-anchor="middle" dominant-baseline="central">${firstLetter}</text>
+      </svg>
+    `)}`;
+  };
+
+  // Handle logo load error
+  const handleLogoError = (startupId: string) => {
+    setLogoErrors(prev => new Set(prev).add(startupId));
+  };
 
   // User ID (in real app, this would come from Cognito auth)
   const [userId] = useState<string>(() => {
@@ -198,10 +237,11 @@ function App() {
   }, []);
 
   // Get Recommendations Now - Trigger matching manually
+  // Get Recommendations Now - Trigger matching manually
   const getRecommendationsNow = async (user: any) => {
     const confirmed = window.confirm('This will search for startups matching your preferences and send you an email with recommendations. Continue?');
     if (!confirmed) return;
-    
+
     try {
       const session = await fetchAuthSession();
       const token = session.tokens?.idToken?.toString();
@@ -210,19 +250,18 @@ function App() {
         alert('❌ Please sign in first');
         return;
       }
-      
-      // Get user email
+
       const userEmail = user?.signInDetails?.loginId || user?.attributes?.email;
       
       if (!userEmail) {
         alert('❌ Could not determine your email address');
         return;
       }
-      
+
       setLoading(true);
-      console.log('Starting recommendation matching via Step Functions...');
-      
-      // Call the Lambda endpoint that triggers Step Functions state machine
+      console.log('Starting recommendation matching for:', userEmail);
+
+      // Call Lambda DIRECTLY via API Gateway
       const response = await fetch(`${API_URL}/match-startups`, {
         method: 'POST',
         headers: {
@@ -230,38 +269,28 @@ function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          investor_id: user.username || userEmail,
-          email: userEmail
+          investor_id: userEmail  // Send the user's email
         })
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || errorData.message || `Request failed with status ${response.status}`);
       }
-      
+
       const data = await response.json();
-      console.log('Step Functions execution started:', data);
-      
-      // Check if execution started successfully
-      if (data.executionArn || data.execution || response.ok) {
-        alert(`✅ Matching process started! You will receive an email at ${userEmail} with your personalized startup recommendations shortly.`);
-      } else {
-        throw new Error('Unexpected response from matching service');
-      }
-      
+      console.log('Matching completed:', data);
+
+      alert(`✅ Recommendations sent! You will receive an email at ${userEmail} with your personalized startup recommendations shortly.`);
+
     } catch (error: any) {
       console.error('Error triggering matching:', error);
       
-      // Provide more specific error messages
       let errorMessage = '❌ Failed to get recommendations. ';
-      
       if (error.message.includes('preferences') || error.message.includes('404')) {
         errorMessage += 'Please make sure you have set your investment preferences first!';
       } else if (error.message.includes('email')) {
         errorMessage += 'There was an issue with your email address.';
-      } else if (error.message.includes('network') || error.message.includes('fetch')) {
-        errorMessage += 'Network error. Please check your connection and try again.';
       } else {
         errorMessage += error.message || 'Please try again later.';
       }
@@ -302,6 +331,41 @@ function App() {
       summary: "Enterprise software adoption continues to accelerate, with B2B SaaS companies showing strong growth metrics.",
       category: "Market Analysis",
       date: "2024-12-08"
+    },
+    {
+      id: 4,
+      title: "AI Startups Raise $25B in Record-Breaking Quarter",
+      summary: "Artificial intelligence companies secured unprecedented funding, with generative AI leading the charge.",
+      category: "AI & Tech",
+      date: "2024-12-12"
+    },
+    {
+      id: 5,
+      title: "European Startups See 30% Increase in Seed Funding",
+      summary: "Early-stage investments in European tech companies reached new heights, with Berlin and London leading.",
+      category: "Global Markets",
+      date: "2024-12-07"
+    },
+    {
+      id: 6,
+      title: "Climate Tech Investments Surge Past $50B Milestone",
+      summary: "Renewable energy and carbon capture technologies attracted major institutional investors.",
+      category: "CleanTech",
+      date: "2024-12-05"
+    },
+    {
+      id: 7,
+      title: "Healthcare Innovation Startups Break Funding Records",
+      summary: "Digital health platforms and biotech companies raised over $12B in Q4, signaling strong investor confidence.",
+      category: "HealthTech",
+      date: "2024-12-03"
+    },
+    {
+      id: 8,
+      title: "Enterprise Software Valuations Reach All-Time High",
+      summary: "B2B SaaS companies are commanding premium valuations as enterprise digitization accelerates globally.",
+      category: "Enterprise Tech",
+      date: "2024-11-30"
     },
     {
       id: 4,
@@ -405,6 +469,11 @@ function App() {
           <section className="market-news-section">
             <div className="container">
               <h2 className="section-title">📰 Market News & Trends</h2>
+              
+              {/* Market Trends Chart */}
+              <MarketTrendsChart />
+              
+              {/* News Grid */}
               <div className="news-grid">
                 {marketNews.map(news => (
                   <div key={news.id} className="news-card">
@@ -516,31 +585,32 @@ function App() {
                 <div className="startups-grid">
                   {filteredStartups.map((startup) => (
                     <div key={startup.startup_id} className="startup-card">
-                      {/* Logo */}
-                      {startup.logo_url && (
-                        <div style={{ 
-                          display: 'flex', 
-                          justifyContent: 'center', 
-                          padding: '1rem',
-                          backgroundColor: '#f8f9fa',
-                          borderRadius: '8px 8px 0 0',
-                          marginBottom: '1rem'
-                        }}>
-                          <img 
-                            src={startup.logo_url} 
-                            alt={`${startup.name} logo`}
-                            style={{
-                              width: '80px',
-                              height: '80px',
-                              objectFit: 'contain'
-                            }}
-                            onError={(e) => {
-                              // Hide image if it fails to load
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
-                        </div>
-                      )}
+                      {/* Logo - Always show (actual logo or placeholder) */}
+                      <div style={{ 
+                        display: 'flex', 
+                        justifyContent: 'center', 
+                        alignItems: 'center',
+                        padding: '1rem',
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px 8px 0 0',
+                        marginBottom: '1rem',
+                        minHeight: '100px'
+                      }}>
+                        <img 
+                          src={getLogoUrl(startup)} 
+                          alt={`${startup.name} logo`}
+                          style={{
+                            width: '80px',
+                            height: '80px',
+                            objectFit: 'contain',
+                            borderRadius: '8px'
+                          }}
+                          onError={() => {
+                            // If actual logo fails to load, switch to placeholder
+                            handleLogoError(startup.startup_id);
+                          }}
+                        />
+                      </div>
                       
                       <div className="card-header">
                         <h3>{startup.name}</h3>
@@ -605,11 +675,38 @@ function App() {
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-close" onClick={handleCloseModal}>×</button>
                 <div className="modal-header">
-                  <div>
-                    <h2>{selectedStartup.name}</h2>
-                    <div className="modal-tags">
-                      <span className="tag industry-tag">{selectedStartup.industry}</span>
-                      <span className="tag stage-tag">{selectedStartup.funding_stage}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {/* Logo in modal */}
+                    <div style={{ 
+                      display: 'flex', 
+                      justifyContent: 'center', 
+                      alignItems: 'center',
+                      width: '80px',
+                      height: '80px',
+                      backgroundColor: '#f8f9fa',
+                      borderRadius: '8px',
+                      flexShrink: 0
+                    }}>
+                      <img 
+                        src={getLogoUrl(selectedStartup)} 
+                        alt={`${selectedStartup.name} logo`}
+                        style={{
+                          width: '80px',
+                          height: '80px',
+                          objectFit: 'contain',
+                          borderRadius: '8px'
+                        }}
+                        onError={() => {
+                          handleLogoError(selectedStartup.startup_id);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <h2>{selectedStartup.name}</h2>
+                      <div className="modal-tags">
+                        <span className="tag industry-tag">{selectedStartup.industry}</span>
+                        <span className="tag stage-tag">{selectedStartup.funding_stage}</span>
+                      </div>
                     </div>
                   </div>
                   <button
